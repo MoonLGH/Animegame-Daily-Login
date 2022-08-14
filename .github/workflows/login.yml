@@ -1,0 +1,32 @@
+on:
+  schedule:
+    # Runs every day
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-readme-with-blog:
+    name: Login to Hoyolab
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+          path: main
+      - name: Set Node.js 14
+        uses: actions/setup-node@v2.4.1
+        with:
+            node-version: 14
+      - name: Install dependencies
+        run: |
+          cd main
+          npm i
+        shell: bash
+      - name: Run the script
+        run: |
+          cd main
+          node index.js
+        shell: bash
+        env:
+            cookies: ${{ secrets.cookies }}
